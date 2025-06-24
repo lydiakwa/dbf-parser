@@ -10,6 +10,13 @@ let form = document.querySelector('form');
 let fileInput = document.querySelector('#upload');
 let csvContent = 'data:text/csv;charset=utf-8,';
 const link = document.querySelector('a');
+const mockData = {
+  rows: [
+    { date: new Date(), name: 'fdfds' },
+    { date: new Date(), name: 'fdfds' },
+    { date: new Date(), name: 'fdfds' },
+  ],
+};
 
 form.addEventListener('submit', (e) => {
   e.preventDefault();
@@ -26,9 +33,9 @@ form.addEventListener('submit', (e) => {
         console.log(datatable);
         const mappedRows = datatable.rows.map((row) => {
           Object.entries(row).forEach(([key, value]) => {
-            if (value instanceof Date) {
-              row[key] = value.toString();
-            }
+            // console.log(row[key]);
+
+            row[key] = value.toString();
           });
           return row;
         });
