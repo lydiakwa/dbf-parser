@@ -23,7 +23,7 @@ form.addEventListener('submit', (e) => {
       if (arrayBuffer) {
         let buffer = Buffer.from(arrayBuffer);
         let datatable = Dbf.read(buffer);
-
+        console.log(datatable);
         const csv = generateCsv(csvConfig)(datatable.rows);
         const blob = asBlob(csvConfig)(csv);
         const url = URL.createObjectURL(blob);
