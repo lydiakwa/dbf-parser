@@ -1,27 +1,35 @@
 import { Dbf } from 'dbf-reader';
 import { DataTable } from 'dbf-reader/models/dbf-file';
 import { Buffer } from 'buffer/';
+import { mkConfig, generateCsv, asBlob } from 'export-to-csv';
 
 window.Buffer = Buffer;
-// var Buffer = require('buffer/').Buffer  // note: the trailing slash is important!
-console.log(Buffer);
-console.log('hi');
+const csvConfig = mkConfig({ useKeysAsHeaders: true });
+
 let form = document.querySelector('form');
-let fileInput = document.querySelector('input');
+let fileInput = document.querySelector('#upload');
+let csvContent = 'data:text/csv;charset=utf-8,';
+const link = document.querySelector('a');
 
 form.addEventListener('submit', (e) => {
   e.preventDefault();
   let reader = new FileReader();
   if (fileInput.files && fileInput.files.length > 0) {
     let file = fileInput.files[0];
-    console.log(file);
+    // console.log(file);
     reader.readAsArrayBuffer(file);
     reader.onload = () => {
       var arrayBuffer = reader.result;
       if (arrayBuffer) {
         let buffer = Buffer.from(arrayBuffer);
         let datatable = Dbf.read(buffer);
-        console.log(datatable);
+
+        const csv = generateCsv(csvConfig)(datatable.rows);
+        const blob = asBlob(csvConfig)(csv);
+        const url = URL.createObjectURL(blob);
+        console.log(csv);
+        link.setAttribute('href', url);
+        link.setAttribute('download', 'csv export');
       }
     };
   }

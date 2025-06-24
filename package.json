@@ -13,6 +13,8 @@
   },
   "dependencies": {
     "buffer": "^6.0.3",
-    "dbf-reader": "^1.0.3"
+    "csv-generate": "^4.4.2",
+    "dbf-reader": "^1.0.3",
+    "export-to-csv": "^1.4.0"
   }
 }
