@@ -24,7 +24,15 @@ form.addEventListener('submit', (e) => {
         let buffer = Buffer.from(arrayBuffer);
         let datatable = Dbf.read(buffer);
         console.log(datatable);
-        const csv = generateCsv(csvConfig)(datatable.rows);
+        const mappedRows = datatable.rows.map((row) => {
+          Object.entries(row).forEach(([key, value]) => {
+            if (value instanceof Date) {
+              row[key] = value.toString();
+            }
+          });
+          return row;
+        });
+        const csv = generateCsv(csvConfig)(mappedRows);
         const blob = asBlob(csvConfig)(csv);
         const url = URL.createObjectURL(blob);
         console.log(csv);
